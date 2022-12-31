@@ -1,4 +1,5 @@
 import 'react-native-url-polyfill/auto';
+import { NavigationContainer } from '@react-navigation/native';
 import { Session } from '@supabase/supabase-js';
 import { useState, useEffect } from 'react';
 import { View } from 'react-native';
@@ -21,8 +22,10 @@ export default function App() {
   }, []);
 
   return (
-    <View>
-      {session && session.user ? <Account key={session.user.id} session={session} /> : <Login />}
-    </View>
+    <NavigationContainer>
+      <View>
+        {session && session.user ? <Account key={session.user.id} session={session} /> : <Login />}
+      </View>
+    </NavigationContainer>
   );
 }
