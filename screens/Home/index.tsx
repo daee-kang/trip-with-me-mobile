@@ -1,17 +1,21 @@
-import { Button, Text } from '@rneui/base';
-import { View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import useGetSession from '../../hooks/useGetSession';
-import { supabase } from '../../lib/supabase';
+import Trips from '../Trips';
+
+type HomeStackParamList = {
+  Trips: undefined;
+};
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 const Home = () => {
-  const session = useGetSession();
-
   return (
-    <View style={{ marginTop: 40 }}>
-      <Text>hello {session.user.email}</Text>
-      <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
-    </View>
+    <HomeStack.Navigator
+      initialRouteName="Trips"
+      screenOptions={{
+        headerShown: false,
+      }}>
+      <HomeStack.Screen name="Trips" component={Trips} />
+    </HomeStack.Navigator>
   );
 };
 

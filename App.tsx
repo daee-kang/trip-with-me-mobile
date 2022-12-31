@@ -1,7 +1,7 @@
 import 'react-native-url-polyfill/auto';
 
 import { useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SessionContext } from './contexts/SessionContext';
 import { supabase } from './lib/supabase';
@@ -21,5 +21,9 @@ export default function App() {
     });
   }, []);
 
-  return <View>{session && session.user ? <Home /> : <Login />}</View>;
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {session && session.user ? <Home /> : <Login />}
+    </SafeAreaView>
+  );
 }
