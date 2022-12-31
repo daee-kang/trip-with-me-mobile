@@ -1,15 +1,15 @@
 import 'react-native-url-polyfill/auto';
-import { NavigationContainer } from '@react-navigation/native';
-import { Session } from '@supabase/supabase-js';
-import { useState, useEffect } from 'react';
+
+import { useEffect, useContext } from 'react';
 import { View } from 'react-native';
 
+import { SessionContext } from './contexts/SessionContext';
 import { supabase } from './lib/supabase';
-import Account from './screens/Account';
+import Home from './screens/Home';
 import Login from './screens/Login';
 
 export default function App() {
-  const [session, setSession] = useState<Session | null>(null);
+  const { session, setSession } = useContext(SessionContext);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -21,11 +21,5 @@ export default function App() {
     });
   }, []);
 
-  return (
-    <NavigationContainer>
-      <View>
-        {session && session.user ? <Account key={session.user.id} session={session} /> : <Login />}
-      </View>
-    </NavigationContainer>
-  );
+  return <View>{session && session.user ? <Home /> : <Login />}</View>;
 }
