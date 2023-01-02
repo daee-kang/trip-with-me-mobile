@@ -5,13 +5,11 @@ import { useCallback } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { supabase } from '../../lib/supabase';
-import { HomeStackParamList } from '../Home';
+import { supabase } from '../lib/supabase';
+import { HomeStackParamList } from './HomeScreen';
 
-type TripScreenProp = NativeStackNavigationProp<HomeStackParamList, 'Trips'>;
-
-const Trips = () => {
-  const navigation = useNavigation<TripScreenProp>();
+const TripsScreen = () => {
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trips'>>();
 
   const onAddTripButtonPress = useCallback(() => {
     navigation.navigate('AddTrip');
@@ -45,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Trips;
+export default TripsScreen;

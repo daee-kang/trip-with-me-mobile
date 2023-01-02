@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { SessionContext } from './contexts/SessionContext';
 import { supabase } from './lib/supabase';
-import Home from './screens/Home';
+import HomeScreen from './screens/HomeScreen';
 import Login from './screens/Login';
 
 export default function App() {
@@ -23,7 +23,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {session && session.user ? <Home /> : <Login />}
+      {session && session.user ? <HomeScreen /> : <Login />}
     </SafeAreaView>
   );
 }

@@ -2,31 +2,33 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Input } from '@rneui/themed';
 import { useCallback, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { supabase } from '../lib/supabase';
-import { HomeStackParamList } from './Home';
+import { HomeStackParamList } from './HomeScreen';
 
-type AddTripScreenProp = NativeStackNavigationProp<HomeStackParamList, 'AddTrip'>;
-
-const AddTrip = () => {
+const AddTripScreen = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const navigation = useNavigation<AddTripScreenProp>();
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'AddTrip'>>();
 
   const onNameChange = useCallback((text: string) => setName(text), []);
   const onDescriptionChange = useCallback((text: string) => setDescription(text), []);
 
   const createTrip = useCallback(async () => {
-    const { error } = await supabase.from('trips').insert({
-      name,
-      description: description === '' ? null : description,
-    });
-    if (error) {
-      return console.log(error);
+    const { error, data } = await supabase
+      .from('trips')
+      .insert({
+        name,
+        description: description === '' ? null : description,
+      })
+      .select();
+    if (error || data.length === 0) {
+      return Alert.alert('Error creating table', error?.message ?? 'data length === 0');
     }
+    navigation.replace('Trip', { id: data[0].id });
   }, [name, description]);
 
   const goBack = useCallback(() => {
@@ -60,4 +62,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddTrip;
+export default AddTripScreen;
