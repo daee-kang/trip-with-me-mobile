@@ -1,9 +1,11 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+import AddTrip from '../AddTrip';
 import Trips from '../Trips';
 
-type HomeStackParamList = {
+export type HomeStackParamList = {
   Trips: undefined;
+  AddTrip: undefined;
 };
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
@@ -15,6 +17,7 @@ const Home = () => {
         headerShown: false,
       }}>
       <HomeStack.Screen name="Trips" component={Trips} />
+      <HomeStack.Screen name="AddTrip" component={AddTrip} />
     </HomeStack.Navigator>
   );
 };

@@ -1,18 +1,48 @@
-import { Text } from '@rneui/themed';
-import { StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Button, Text } from '@rneui/themed';
+import { useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import useGetSession from '../../hooks/useGetSession';
+import { supabase } from '../../lib/supabase';
+import { HomeStackParamList } from '../Home';
+
+type TripScreenProp = NativeStackNavigationProp<HomeStackParamList, 'Trips'>;
 
 const Trips = () => {
-  const session = useGetSession();
+  const navigation = useNavigation<TripScreenProp>();
+
+  const onAddTripButtonPress = useCallback(() => {
+    navigation.navigate('AddTrip');
+  }, []);
+
+  const signOut = useCallback(() => {
+    supabase.auth.signOut();
+  }, []);
+
   return (
-    <SafeAreaView>
-      <Text h4>{session.user.email} trips</Text>
+    <SafeAreaView style={styles.page}>
+      <View style={styles.header}>
+        <Text h4 style={{ flex: 1 }}>
+          trips
+        </Text>
+        <Button onPress={onAddTripButtonPress}>add trip</Button>
+        <Button color="secondary" onPress={signOut}>
+          logout
+        </Button>
+      </View>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  page: {
+    paddingHorizontal: 16,
+  },
+  header: {
+    flexDirection: 'row',
+  },
+});
 
 export default Trips;
