@@ -69,7 +69,7 @@ const TripsScreen = () => {
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    marginBottom: Spacing.default,
+    marginVertical: Spacing.default,
   },
 });
 

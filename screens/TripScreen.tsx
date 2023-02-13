@@ -5,6 +5,7 @@ import { useCallback, useEffect } from 'react';
 import { Alert, View } from 'react-native';
 
 import { useDeleteTripMutation, useGetTripQuery } from '../api';
+import { GoBackTopNavigation } from '../components';
 import { CommonStyles, Status } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
@@ -31,19 +32,21 @@ const TripScreen = () => {
   }, [getTripQuery.data]);
 
   return (
-    <View style={CommonStyles.page}>
-      <Button onPress={() => navigation.goBack()}>go back</Button>
-      {getTripQuery.isFetching ? (
-        <Spinner status={Status.info} />
-      ) : (
-        <View>
-          <Text>this yo trip</Text>
-          <Text>{getTripQuery.data?.[0]?.id}</Text>
-          <Text>{getTripQuery.data?.[0]?.description ?? ''}</Text>
-          <Button onPress={deleteTrip}>delete trip</Button>
-        </View>
-      )}
-    </View>
+    <>
+      <GoBackTopNavigation onPress={() => navigation.goBack()} title="go back" />
+      <View style={CommonStyles.page}>
+        {getTripQuery.isFetching ? (
+          <Spinner status={Status.info} />
+        ) : (
+          <View>
+            <Text>this yo trip</Text>
+            <Text>{getTripQuery.data?.[0]?.id}</Text>
+            <Text>{getTripQuery.data?.[0]?.description ?? ''}</Text>
+            <Button onPress={deleteTrip}>delete trip</Button>
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 

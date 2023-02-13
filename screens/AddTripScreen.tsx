@@ -2,9 +2,10 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Input } from '@ui-kitten/components';
 import { useCallback, useEffect, useState } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { useAddTripMutation } from '../api';
+import { GoBackTopNavigation } from '../components';
 import { CommonStyles } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
@@ -37,32 +38,20 @@ const AddTripScreen = () => {
     }
   }, [addTripMutation.isSuccess, addTripMutation.isError]);
 
-  const goBack = useCallback(() => {
-    navigation.goBack();
-  }, []);
-
   return (
-    <View style={CommonStyles.page}>
-      <View style={styles.header}>
-        <Button status="primary" onPress={goBack}>
-          go back
-        </Button>
+    <>
+      <GoBackTopNavigation onPress={() => navigation.goBack()} title="go back" />
+      <View style={CommonStyles.page}>
+        <View>
+          <Input placeholder="name" value={name} onChangeText={onNameChange} />
+          <Input placeholder="description" value={description} onChangeText={onDescriptionChange} />
+          <Button disabled={name === ''} onPress={createTrip}>
+            create
+          </Button>
+        </View>
       </View>
-      <View>
-        <Input placeholder="name" value={name} onChangeText={onNameChange} />
-        <Input placeholder="description" value={description} onChangeText={onDescriptionChange} />
-        <Button disabled={name === ''} onPress={createTrip}>
-          create
-        </Button>
-      </View>
-    </View>
+    </>
   );
 };
-
-const styles = StyleSheet.create({
-  header: {
-    flexDirection: 'row',
-  },
-});
 
 export default AddTripScreen;
