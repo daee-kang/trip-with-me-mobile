@@ -46,7 +46,7 @@ const TripsScreen = () => {
         <Button onPress={onAddTripButtonPress} style={{ marginRight: Spacing.default }}>
           add trip
         </Button>
-        <Button status="primary" onPress={signOut}>
+        <Button status={Status.danger} onPress={signOut}>
           logout
         </Button>
       </View>
