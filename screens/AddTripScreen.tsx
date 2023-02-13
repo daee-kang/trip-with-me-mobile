@@ -4,7 +4,7 @@ import { Button, Input } from '@ui-kitten/components';
 import { useCallback, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
-import { supabase } from '../lib/supabase';
+import { useAddTripMutation } from '../api';
 import { CommonStyles } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
@@ -14,21 +14,22 @@ const AddTripScreen = () => {
 
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'AddTrip'>>();
 
+  const addTripMutation = useAddTripMutation();
+
   const onNameChange = useCallback((text: string) => setName(text), []);
   const onDescriptionChange = useCallback((text: string) => setDescription(text), []);
 
   const createTrip = useCallback(async () => {
-    const { error, data } = await supabase
-      .from('trips')
-      .insert({
-        name,
-        description: description === '' ? null : description,
-      })
-      .select();
-    if (error || data.length === 0) {
-      return Alert.alert('Error creating table', error?.message ?? 'data length === 0');
+    await addTripMutation.mutateAsync({
+      name,
+      description: description === '' ? undefined : description,
+    });
+
+    if (addTripMutation.error || !addTripMutation.data) {
+      return Alert.alert('Error creating trip');
     }
-    navigation.replace('Trip', { id: data[0].id });
+
+    navigation.replace('Trip', { id: addTripMutation.data.id });
   }, [name, description]);
 
   const goBack = useCallback(() => {

@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
 
+import { Spacing } from './Theme';
+
 const CommonStyles = StyleSheet.create({
   page: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.larger,
   },
 });
 

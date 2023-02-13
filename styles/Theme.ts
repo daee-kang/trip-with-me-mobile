@@ -50,5 +50,49 @@ export const myTheme = {
   ...colors,
 };
 
-export const Colors = Object.keys(colors);
-export const ButtonStatus = {};
+// export const Colors = Object.keys(colors);
+export enum Spacing {
+  smallest = 2,
+  smaller = 4,
+  small = 6,
+  default = 8,
+  large = 12,
+  larger = 16,
+  largest = 24,
+}
+export enum Status {
+  basic = 'basic',
+  primary = 'primary',
+  success = 'success',
+  info = 'info',
+  warning = 'warning',
+  danger = 'danger',
+  control = 'control',
+}
+export enum Size {
+  tiny = 'tiny',
+  small = 'small',
+  medium = 'medium',
+  large = 'large',
+  giant = 'giant',
+}
+export enum TextStyle {
+  h1 = 'h1',
+  h2 = 'h2',
+  h3 = 'h3',
+  h4 = 'h4',
+  h5 = 'h5',
+  h6 = 'h6',
+  s1 = 's1',
+  s2 = 's2',
+  p1 = 'p1',
+  p2 = 'p2',
+  c1 = 'c1',
+  c2 = 'c2',
+  label = 'label',
+}
+export enum Appearance {
+  default = 'default',
+  alternative = 'alternative',
+  hint = 'hint',
+}

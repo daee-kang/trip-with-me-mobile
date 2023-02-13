@@ -1,4 +1,5 @@
 import * as eva from '@eva-design/eva';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { registerRootComponent } from 'expo';
@@ -18,15 +19,19 @@ const Index = () => {
     setTheme(nextTheme);
   };
 
+  const queryClient = new QueryClient();
+
   return (
     <SessionProvider>
       <SafeAreaProvider>
-        <IconRegistry icons={EvaIconsPack} />
-        <ThemeModeContext.Provider value={{ theme, toggleTheme }}>
-          <ApplicationProvider {...eva} theme={{ ...eva[theme], ...myTheme }}>
-            <App />
-          </ApplicationProvider>
-        </ThemeModeContext.Provider>
+        <QueryClientProvider client={queryClient}>
+          <IconRegistry icons={EvaIconsPack} />
+          <ThemeModeContext.Provider value={{ theme, toggleTheme }}>
+            <ApplicationProvider {...eva} theme={{ ...eva[theme], ...myTheme }}>
+              <App />
+            </ApplicationProvider>
+          </ThemeModeContext.Provider>
+        </QueryClientProvider>
       </SafeAreaProvider>
     </SessionProvider>
   );
