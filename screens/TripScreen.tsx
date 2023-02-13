@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Spinner, Text } from '@ui-kitten/components';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { View } from 'react-native';
 
 import { useDeleteTripMutation, useGetTripQuery } from '../api';
@@ -15,10 +15,11 @@ const TripScreen = () => {
   const getTripQuery = useGetTripQuery(route.params.id);
   const deleteTripMutation = useDeleteTripMutation();
 
-  const deleteTrip = useCallback(async () => {
-    await deleteTripMutation.mutateAsync(route.params.id);
-    navigation.goBack();
-  }, []);
+  const deleteTrip = useCallback(() => deleteTripMutation.mutate(route.params.id), []);
+
+  useEffect(() => {
+    if (deleteTripMutation.isSuccess) navigation.goBack();
+  }, [deleteTripMutation.isSuccess]);
 
   return (
     <View style={CommonStyles.page}>

@@ -5,18 +5,15 @@ import { supabase } from '../../lib/supabase';
 export type deleteTripMutationRequestParams = string;
 
 const deleteTripDB = async (tripid: string) => {
-  return await supabase
-    .from('trips')
-    .delete()
-    .eq('id', tripid)
-    .throwOnError()
-    .then(() => 'success');
+  return await supabase.from('trips').delete().eq('id', tripid).throwOnError();
 };
 
 export const useDeleteTripMutation = () => {
   return useMutation<DeleteTripDBResponse, unknown, deleteTripMutationRequestParams>(
     async (tripid: deleteTripMutationRequestParams) => {
-      return deleteTripDB(tripid).catch((err) => err);
+      return deleteTripDB(tripid)
+        .then(() => 'success')
+        .catch((err) => err);
     }
   );
 };

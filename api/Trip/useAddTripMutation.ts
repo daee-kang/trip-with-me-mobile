@@ -17,17 +17,15 @@ export const addTripDB = async (trip: addTripMutationRequestParams) => {
     .throwOnError()
     .select()
     .limit(1)
-    .throwOnError()
-    .then((res) => {
-      if (!res.data || res.data.length === 0) throw new Error('Unable to fetch newly created trip');
-      return res.data[0];
-    });
+    .throwOnError();
 };
 
 export const useAddTripMutation = () => {
   return useMutation<AddTripDBResponse, unknown, addTripMutationRequestParams>(
     async (trip: addTripMutationRequestParams) => {
-      return addTripDB(trip).catch((err) => err);
+      return addTripDB(trip)
+        .then((res) => res)
+        .catch((err) => err);
     }
   );
 };
