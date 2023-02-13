@@ -1,8 +1,12 @@
-import { Button, Input } from '@rneui/base';
+import { Button, Icon, Input } from '@ui-kitten/components';
 import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { supabase } from '../lib/supabase';
+import { CommonStyles } from '../styles';
+
+const EnvelopeIcon = (props: any) => <Icon name="email-outline" {...props} />;
+const LockIcon = (props: any) => <Icon name="lock-outline" {...props} />;
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -32,11 +36,11 @@ export default function Auth() {
   }
 
   return (
-    <View>
+    <View style={CommonStyles.page}>
       <View style={[styles.verticallySpaced, styles.mt20]}>
         <Input
           label="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+          accessoryLeft={EnvelopeIcon}
           onChangeText={(text) => setEmail(text)}
           value={email}
           placeholder="email@address.com"
@@ -46,7 +50,7 @@ export default function Auth() {
       <View style={styles.verticallySpaced}>
         <Input
           label="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
+          accessoryLeft={LockIcon}
           onChangeText={(text) => setPassword(text)}
           value={password}
           secureTextEntry
@@ -55,10 +59,14 @@ export default function Auth() {
         />
       </View>
       <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
+        <Button disabled={loading} onPress={() => signInWithEmail()}>
+          Sign In
+        </Button>
       </View>
       <View style={styles.verticallySpaced}>
-        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
+        <Button disabled={loading} onPress={() => signUpWithEmail()}>
+          Sign up
+        </Button>
       </View>
     </View>
   );

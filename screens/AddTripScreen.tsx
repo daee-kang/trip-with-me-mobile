@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, Input } from '@rneui/themed';
+import { Button, Input } from '@ui-kitten/components';
 import { useCallback, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { supabase } from '../lib/supabase';
+import { CommonStyles } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
 const AddTripScreen = () => {
@@ -36,9 +36,9 @@ const AddTripScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.page}>
+    <View style={CommonStyles.page}>
       <View style={styles.header}>
-        <Button color="secondary" onPress={goBack}>
+        <Button status="primary" onPress={goBack}>
           go back
         </Button>
       </View>
@@ -49,14 +49,11 @@ const AddTripScreen = () => {
           create
         </Button>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  page: {
-    flex: 1,
-  },
   header: {
     flexDirection: 'row',
   },

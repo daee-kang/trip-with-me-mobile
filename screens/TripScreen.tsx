@@ -1,10 +1,11 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, Text } from '@rneui/themed';
+import { Button, Text } from '@ui-kitten/components';
 import { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
 
 import { deleteTripDB, getTripDB, GetTripDBResponse } from '../api/trips';
+import { CommonStyles } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
 const TripScreen = () => {
@@ -34,15 +35,15 @@ const TripScreen = () => {
   }, []);
 
   return (
-    <View>
+    <View style={CommonStyles.page}>
       <Button onPress={() => navigation.goBack()}>go back</Button>
       {trip === null || trip.length === 0 ? (
         <Text>loading</Text>
       ) : (
         <View>
           <Text>this yo trip</Text>
-          <Text>{trip[0].name}</Text>
-          <Text>{trip[0].description}</Text>
+          <Text>{trip[0].id}</Text>
+          <Text>{trip[0].description ?? ''}</Text>
           <Button onPress={deleteTrip}>delete trip</Button>
         </View>
       )}
