@@ -11,7 +11,7 @@ const GoBackTopNavigation = ({ title, onPress }: Props) => {
     <TopNavigation
       accessoryLeft={<TopNavigationAction icon={<Icon name="arrow-back" />} onPress={onPress} />}
       title={title}
-      style={{ backgroundColor: theme['background-basic-color-2'] }}
+      style={{ backgroundColor: theme['background-basic-color-2'], padding: 0 }}
     />
   );
 };
