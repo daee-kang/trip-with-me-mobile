@@ -2,7 +2,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Spinner, Text } from '@ui-kitten/components';
 import { useCallback, useEffect } from 'react';
-import { View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { useDeleteTripMutation, useGetTripQuery } from '../api';
 import { CommonStyles, Status } from '../styles';
@@ -21,6 +21,15 @@ const TripScreen = () => {
     if (deleteTripMutation.isSuccess) navigation.goBack();
   }, [deleteTripMutation.isSuccess]);
 
+  useEffect(() => {
+    if (getTripQuery.isSuccess) {
+      if (!getTripQuery.data || getTripQuery.data.length === 0) {
+        Alert.alert('Error loading trip');
+        navigation.goBack();
+      }
+    }
+  }, [getTripQuery.data]);
+
   return (
     <View style={CommonStyles.page}>
       <Button onPress={() => navigation.goBack()}>go back</Button>
@@ -29,8 +38,8 @@ const TripScreen = () => {
       ) : (
         <View>
           <Text>this yo trip</Text>
-          <Text>{getTripQuery.data?.[0].id}</Text>
-          <Text>{getTripQuery.data?.[0].description ?? ''}</Text>
+          <Text>{getTripQuery.data?.[0]?.id}</Text>
+          <Text>{getTripQuery.data?.[0]?.description ?? ''}</Text>
           <Button onPress={deleteTrip}>delete trip</Button>
         </View>
       )}
