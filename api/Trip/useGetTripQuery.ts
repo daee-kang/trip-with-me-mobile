@@ -2,15 +2,20 @@ import { useQuery } from '@tanstack/react-query';
 
 import { supabase } from '../../lib/supabase';
 
-const getTripDB = async (tripid: string) => {
-  return await supabase.from('trips').select().eq('id', tripid).throwOnError();
+const getTripDB = async (tripId: string) => {
+  return await supabase.from('trips').select().eq('id', tripId).throwOnError();
 };
 
-export const useGetTripQuery = (tripid: string) => {
-  const key = ['trip', tripid];
+export const useGetTripQuery = (tripId: string) => {
+  const key = ['trip', tripId];
 
   return useQuery(key, async () => {
-    return getTripDB(tripid).then((res) => res.data);
+    return getTripDB(tripId)
+      .then((res) => {
+        console.log(res.data);
+        return res.data;
+      })
+      .catch((err) => err);
   });
 };
 export type GetTripDBResponse = Awaited<ReturnType<typeof getTripDB>>;

@@ -21,16 +21,27 @@ const TripScreen = () => {
 
   useEffect(() => {
     if (deleteTripMutation.isSuccess) navigation.goBack();
-  }, [deleteTripMutation.isSuccess]);
+  }, [deleteTripMutation.isSuccess, navigation]);
 
   useEffect(() => {
+    if (getTripQuery.isFetching) return;
+
     if (getTripQuery.isSuccess) {
       if (!getTripQuery.data || getTripQuery.data.length === 0) {
+        console.log(getTripQuery.data, route.params.id);
         Alert.alert('Error loading trip');
         navigation.goBack();
       }
     }
-  }, [getTripQuery.data]);
+  }, [
+    getTripQuery.data,
+    getTripQuery.isSuccess,
+    getTripQuery.isFetching,
+    route.params.id,
+    navigation,
+  ]);
+
+  if (getTripQuery.data && getTripQuery.data.length === 0) return null;
 
   return (
     <>
@@ -39,7 +50,7 @@ const TripScreen = () => {
         {getTripQuery.isFetching ? (
           <Spinner status={Status.info} />
         ) : (
-          <TripContent trip={getTripQuery.data?.[0]} />
+          <TripContent trip={getTripQuery.data![0]} />
         )}
       </View>
     </>

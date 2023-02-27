@@ -5,48 +5,54 @@ export interface Database {
     Tables: {
       transaction_detail: {
         Row: {
-          id: string;
-          transaction_id: string;
-          to_user: string;
           amount: number;
+          id: string;
+          to_user: string;
+          transaction_id: string;
         };
         Insert: {
-          id: string;
-          transaction_id: string;
-          to_user: string;
           amount: number;
+          id: string;
+          to_user: string;
+          transaction_id: string;
         };
         Update: {
-          id?: string;
-          transaction_id?: string;
-          to_user?: string;
           amount?: number;
+          id?: string;
+          to_user?: string;
+          transaction_id?: string;
         };
       };
       transactions: {
         Row: {
-          id: string;
+          amount: number;
           created_at: string;
-          trip_id: string;
-          for_user: string;
           description: string | null;
+          from_user_id: string;
+          id: string;
           photo: string | null;
+          to_user_id: string | null;
+          trip_id: string;
         };
         Insert: {
-          id?: string;
+          amount: number;
           created_at?: string;
-          trip_id: string;
-          for_user: string;
           description?: string | null;
+          from_user_id?: string;
+          id?: string;
           photo?: string | null;
+          to_user_id?: string | null;
+          trip_id: string;
         };
         Update: {
-          id?: string;
+          amount?: number;
           created_at?: string;
-          trip_id?: string;
-          for_user?: string;
           description?: string | null;
+          from_user_id?: string;
+          id?: string;
           photo?: string | null;
+          to_user_id?: string | null;
+          trip_id?: string;
         };
       };
       trip_members: {
@@ -68,45 +74,45 @@ export interface Database {
       };
       trips: {
         Row: {
-          id: string;
           created_at: string;
-          name: string;
           description: string | null;
-          photo: string | null;
+          id: string;
+          name: string;
           owner_id: string;
+          photo: string | null;
         };
         Insert: {
-          id?: string;
           created_at?: string;
-          name: string;
           description?: string | null;
-          photo?: string | null;
+          id?: string;
+          name: string;
           owner_id?: string;
+          photo?: string | null;
         };
         Update: {
-          id?: string;
           created_at?: string;
-          name?: string;
           description?: string | null;
-          photo?: string | null;
+          id?: string;
+          name?: string;
           owner_id?: string;
+          photo?: string | null;
         };
       };
       users: {
         Row: {
-          id: string;
           created_at: string | null;
           email: string;
+          id: string;
         };
         Insert: {
-          id?: string;
           created_at?: string | null;
           email: string;
+          id?: string;
         };
         Update: {
-          id?: string;
           created_at?: string | null;
           email?: string;
+          id?: string;
         };
       };
     };
@@ -117,6 +123,9 @@ export interface Database {
       [_ in never]: never;
     };
     Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
       [_ in never]: never;
     };
   };

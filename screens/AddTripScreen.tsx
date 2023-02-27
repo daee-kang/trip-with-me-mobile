@@ -25,7 +25,7 @@ const AddTripScreen = () => {
       name,
       description: description === '' ? undefined : description,
     });
-  }, [name, description]);
+  }, [addTripMutation, name, description]);
 
   useEffect(() => {
     if (addTripMutation.isSuccess) {
@@ -36,7 +36,7 @@ const AddTripScreen = () => {
     if (addTripMutation.isError) {
       return Alert.alert('Error creating trip');
     }
-  }, [addTripMutation.isSuccess, addTripMutation.isError]);
+  }, [addTripMutation.isSuccess, addTripMutation.isError, addTripMutation.data?.data, navigation]);
 
   return (
     <>

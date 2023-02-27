@@ -23,7 +23,7 @@ const TripsScreen = () => {
 
   const onAddTripButtonPress = useCallback(() => {
     navigation.navigate('AddTrip');
-  }, []);
+  }, [navigation]);
 
   const signOut = useCallback(() => {
     supabase.auth.signOut();
