@@ -1,17 +1,21 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, List, Spinner, Text } from '@ui-kitten/components';
-import { useCallback, useEffect, useMemo } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { useMemo } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { useAddTripTransaction, useGetTripTransactions } from '../../api';
+import { useGetTripTransactions } from '../../api';
 import { TextStyle } from '../../styles';
 import { Trip } from '../../types';
+import { HomeStackParamList } from '../HomeScreen';
 
 type Props = {
   trip: Trip;
 };
 const TripContent = ({ trip }: Props) => {
+  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
   const transactionQuery = useGetTripTransactions(trip.id);
-  const addTransactionMutation = useAddTripTransaction(trip.id);
+  // const addTransactionMutation = useAddTripTransaction(trip.id);
 
   const tripTotal = useMemo(
     () =>
@@ -20,28 +24,6 @@ const TripContent = ({ trip }: Props) => {
       }, 0),
     [transactionQuery.data]
   );
-
-  const addTransaction = useCallback(() => {
-    addTransactionMutation.mutate({
-      amount: 100,
-      description: 'test',
-      trip_id: trip.id,
-    });
-  }, [addTransactionMutation, trip.id]);
-
-  useEffect(() => {
-    if (addTransactionMutation.isSuccess) {
-      console.log('success');
-    }
-
-    if (addTransactionMutation.isError) {
-      Alert.alert('Error adding transaction', addTransactionMutation.error?.message ?? '');
-    }
-  }, [
-    addTransactionMutation.error?.message,
-    addTransactionMutation.isError,
-    addTransactionMutation.isSuccess,
-  ]);
 
   // TODO: move to intl helper
   const formatter = new Intl.NumberFormat('en-US', {
@@ -65,7 +47,9 @@ const TripContent = ({ trip }: Props) => {
           )}
         </View>
 
-        <Button onPress={addTransaction}>Add Transaction</Button>
+        <Button onPress={() => navigation.navigate('AddTransaction', { trip })}>
+          Add Transaction
+        </Button>
 
         <List
           data={transactionQuery.data ?? []}

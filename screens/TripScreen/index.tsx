@@ -1,12 +1,12 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, Spinner, Text } from '@ui-kitten/components';
+import { Spinner } from '@ui-kitten/components';
 import { useCallback, useEffect } from 'react';
-import { Alert, StyleSheet, View } from 'react-native';
+import { Alert, View } from 'react-native';
 
 import { useDeleteTripMutation, useGetTripQuery } from '../../api';
 import { GoBackTopNavigation } from '../../components';
-import { CommonStyles, Status, TextStyle } from '../../styles';
+import { CommonStyles, Status } from '../../styles';
 import { HomeStackParamList } from './../HomeScreen';
 import TripContent from './TripContent';
 
@@ -28,7 +28,6 @@ const TripScreen = () => {
 
     if (getTripQuery.isSuccess) {
       if (!getTripQuery.data || getTripQuery.data.length === 0) {
-        console.log(getTripQuery.data, route.params.id);
         Alert.alert('Error loading trip');
         navigation.goBack();
       }
