@@ -53,7 +53,12 @@ const TripContent = ({ trip }: Props) => {
 
         <List
           data={transactionQuery.data ?? []}
-          renderItem={({ item }) => <Text>{formatter.format(item.amount)}</Text>}
+          renderItem={({ item }) => (
+            <View style={styles.transactionRow}>
+              <Text style={{ flex: 1 }}>{item.description ?? 'no description'}</Text>
+              <Text style={{ flex: 1 }}>{formatter.format(item.amount)}</Text>
+            </View>
+          )}
         />
       </View>
     </View>
@@ -63,6 +68,9 @@ const TripContent = ({ trip }: Props) => {
 const styles = StyleSheet.create({
   tripSummary: {
     alignContent: 'center',
+  },
+  transactionRow: {
+    flexDirection: 'row',
   },
 });
 

@@ -3,26 +3,6 @@ export type Json = string | number | boolean | null | { [key: string]: Json } | 
 export interface Database {
   public: {
     Tables: {
-      transaction_detail: {
-        Row: {
-          amount: number;
-          id: string;
-          to_user: string;
-          transaction_id: string;
-        };
-        Insert: {
-          amount: number;
-          id: string;
-          to_user: string;
-          transaction_id: string;
-        };
-        Update: {
-          amount?: number;
-          id?: string;
-          to_user?: string;
-          transaction_id?: string;
-        };
-      };
       transactions: {
         Row: {
           amount: number;
