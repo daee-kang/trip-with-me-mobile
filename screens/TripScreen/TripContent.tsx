@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Button, Card, List, Spinner, Text } from '@ui-kitten/components';
 import { useMemo } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
 
 import { useGetTripTransactions } from '../../api';
 import { Spacing, TextStyle } from '../../styles';
@@ -59,6 +59,9 @@ const TripContent = ({ trip }: Props) => {
               <View>
                 <Text style={{ flex: 1 }}>{item.description ?? 'no description'}</Text>
                 <Text style={{ flex: 1 }}>{formatter.format(item.amount)}</Text>
+              </View>
+              <View>
+                <Image src={} />
               </View>
             </Card>
           )}
