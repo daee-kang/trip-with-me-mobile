@@ -1,17 +1,18 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, ButtonGroup, Icon, Input } from '@ui-kitten/components';
+import { Button, ButtonGroup, Icon, Input, Spinner } from '@ui-kitten/components';
 import { decode } from 'base64-arraybuffer';
 import * as ImagePicker from 'expo-image-picker';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Alert, Text, View, StyleSheet, Image } from 'react-native';
 import CurrencyInput from 'react-native-currency-input';
+import uuid from 'react-native-uuid';
 
 import { useAddTripTransaction } from '../api';
 import { GoBackTopNavigation } from '../components';
 import { supabase } from '../lib/supabase';
-import { CommonStyles, Spacing, Status } from '../styles';
+import { CommonStyles, Spacing, Status, Size } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
 type TransactionFormData = {
@@ -21,6 +22,8 @@ type TransactionFormData = {
 };
 
 const AddTransactionScreen = () => {
+  const [submitting, setSubmitting] = useState(false);
+
   const {
     setValue,
     watch,
@@ -39,7 +42,6 @@ const AddTransactionScreen = () => {
 
   const uploadImageAsync = useCallback(
     async (base64_image: string) => {
-      console.log('uploading image');
       const { error } = await supabase.storage
         .from('transaction-images')
         .upload(`trip-${trip.id}.png`, decode(base64_image), {
@@ -55,10 +57,12 @@ const AddTransactionScreen = () => {
 
   const onSubmit = handleSubmit(
     async (data) => {
+      setSubmitting(true);
+
       const { amount, description } = data;
       let imageUploadSuccess = false;
 
-      if (image.base64) {
+      if (image?.base64) {
         try {
           await uploadImageAsync(image.base64);
           imageUploadSuccess = true;
@@ -77,7 +81,7 @@ const AddTransactionScreen = () => {
         amount: Number(amount),
         description,
         trip_id: trip.id,
-        photo: image ? `trip-${trip.id}.png` : undefined,
+        photo: image ? `trip-${trip.id}-${uuid.v4()}.png` : undefined,
       });
     },
     (errors) => {
@@ -122,11 +126,13 @@ const AddTransactionScreen = () => {
 
   useEffect(() => {
     if (addTransactionMutation.isSuccess) {
-      console.log('success');
+      setSubmitting(false);
       navigation.goBack();
+      return;
     }
 
     if (addTransactionMutation.isError) {
+      setSubmitting(false);
       Alert.alert('Error adding transaction', addTransactionMutation.error?.message ?? '');
     }
   }, [
@@ -145,7 +151,12 @@ const AddTransactionScreen = () => {
           rules={{ required: true }}
           control={control}
           render={({ field }) => (
-            <Input onChangeText={field.onChange} placeholder="description" {...field} />
+            <Input
+              onChangeText={field.onChange}
+              placeholder="description"
+              disabled={submitting}
+              {...field}
+            />
           )}
         />
         <Controller
@@ -163,7 +174,9 @@ const AddTransactionScreen = () => {
                 separator="."
                 onChangeValue={(value) => onChange(value?.toString())}
                 {...props}
-                renderTextInput={(textInputProps) => <Input {...textInputProps} />}
+                renderTextInput={(textInputProps) => (
+                  <Input disabled={submitting} {...textInputProps} />
+                )}
               />
             );
           }}
@@ -173,21 +186,30 @@ const AddTransactionScreen = () => {
             <Button
               onPress={uploadImage}
               style={{ flex: 1 }}
-              accessoryLeft={<Icon name="image-outline" />}>
+              accessoryLeft={<Icon name="image-outline" />}
+              disabled={submitting}>
               Upload image
             </Button>
             <Button
               onPress={takeImage}
               style={{ flex: 1 }}
-              accessoryLeft={<Icon name="camera-outline" />}>
+              accessoryLeft={<Icon name="camera-outline" />}
+              disabled={submitting}>
               Take Image
             </Button>
           </ButtonGroup>
           {image && <Image source={{ uri: image.uri }} style={{ width: 200, height: 200 }} />}
+          <Spinner status={Status.control} />
         </View>
-        <Button onPress={onSubmit}>
-          <Text>add transaction</Text>
-        </Button>
+        {submitting ? (
+          <View style={{ alignItems: 'center' }}>
+            <Spinner />
+          </View>
+        ) : (
+          <Button onPress={onSubmit}>
+            {submitting ? <Spinner status={Status.control} /> : <Text>add transaction</Text>}
+          </Button>
+        )}
       </View>
     </>
   );

@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, List, Spinner, Text } from '@ui-kitten/components';
+import { Button, Card, List, Spinner, Text } from '@ui-kitten/components';
 import { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { useGetTripTransactions } from '../../api';
-import { TextStyle } from '../../styles';
+import { Spacing, TextStyle } from '../../styles';
 import { Trip } from '../../types';
 import { HomeStackParamList } from '../HomeScreen';
 
@@ -51,13 +51,16 @@ const TripContent = ({ trip }: Props) => {
           Add Transaction
         </Button>
 
-        <List
+        <FlatList
           data={transactionQuery.data ?? []}
+          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
           renderItem={({ item }) => (
-            <View style={styles.transactionRow}>
-              <Text style={{ flex: 1 }}>{item.description ?? 'no description'}</Text>
-              <Text style={{ flex: 1 }}>{formatter.format(item.amount)}</Text>
-            </View>
+            <Card style={styles.transactionRow}>
+              <View>
+                <Text style={{ flex: 1 }}>{item.description ?? 'no description'}</Text>
+                <Text style={{ flex: 1 }}>{formatter.format(item.amount)}</Text>
+              </View>
+            </Card>
           )}
         />
       </View>
@@ -71,6 +74,7 @@ const styles = StyleSheet.create({
   },
   transactionRow: {
     flexDirection: 'row',
+    padding: Spacing.default,
   },
 });
 
