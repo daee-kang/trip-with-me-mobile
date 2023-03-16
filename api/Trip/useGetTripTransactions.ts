@@ -11,7 +11,7 @@ export const useGetTripTransactions = (tripId: string) => {
 
   return useQuery<GetTripTransactionsDBResponse['data']>(key, async () => {
     return getTripTransactionsDB(tripId)
-      .then((res) => res.data)
+      .then((res) => res.data?.sort((a, b) => b.created_at.localeCompare(a.created_at)))
       .catch((err) => err);
   });
 };

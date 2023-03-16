@@ -40,20 +40,17 @@ const AddTransactionScreen = () => {
 
   const addTransactionMutation = useAddTripTransaction(trip.id);
 
-  const uploadImageAsync = useCallback(
-    async (base64_image: string) => {
-      const { error } = await supabase.storage
-        .from('transaction-images')
-        .upload(`trip-${trip.id}.png`, decode(base64_image), {
-          contentType: 'image/png',
-          cacheControl: '3600',
-          upsert: true,
-        });
+  const uploadImageAsync = useCallback(async (base64_image: string, path: string) => {
+    const { error } = await supabase.storage
+      .from('transaction-images')
+      .upload(path, decode(base64_image), {
+        contentType: 'image/png',
+        cacheControl: '3600',
+        upsert: true,
+      });
 
-      if (error) throw error;
-    },
-    [trip.id]
-  );
+    if (error) throw error;
+  }, []);
 
   const onSubmit = handleSubmit(
     async (data) => {
@@ -62,9 +59,11 @@ const AddTransactionScreen = () => {
       const { amount, description } = data;
       let imageUploadSuccess = false;
 
+      const photoUri = `trip-${trip.id}-${uuid.v4()}.png`;
+
       if (image?.base64) {
         try {
-          await uploadImageAsync(image.base64);
+          await uploadImageAsync(image.base64, photoUri);
           imageUploadSuccess = true;
         } catch (e) {
           Alert.alert('Error', 'Unable to upload image. Please try again.');
@@ -81,7 +80,7 @@ const AddTransactionScreen = () => {
         amount: Number(amount),
         description,
         trip_id: trip.id,
-        photo: image ? `trip-${trip.id}-${uuid.v4()}.png` : undefined,
+        photo: image ? photoUri : undefined,
       });
     },
     (errors) => {

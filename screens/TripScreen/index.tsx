@@ -45,7 +45,7 @@ const TripScreen = () => {
   return (
     <>
       <GoBackTopNavigation onPress={() => navigation.goBack()} title="go back" />
-      <View style={CommonStyles.page}>
+      <View style={[CommonStyles.page, { flex: 1 }]}>
         {getTripQuery.isFetching ? (
           <Spinner status={Status.info} />
         ) : (

@@ -1,21 +1,22 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, Card, List, Spinner, Text } from '@ui-kitten/components';
+import { Button, Spinner, Text } from '@ui-kitten/components';
 import { useMemo } from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import { useGetTripTransactions } from '../../api';
-import { Spacing, TextStyle } from '../../styles';
+import { TextStyle } from '../../styles';
 import { Trip } from '../../types';
 import { HomeStackParamList } from '../HomeScreen';
+import TripTransactionRow from './TripTransactionRow';
 
 type Props = {
   trip: Trip;
 };
 const TripContent = ({ trip }: Props) => {
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
+
   const transactionQuery = useGetTripTransactions(trip.id);
-  // const addTransactionMutation = useAddTripTransaction(trip.id);
 
   const tripTotal = useMemo(
     () =>
@@ -25,14 +26,13 @@ const TripContent = ({ trip }: Props) => {
     [transactionQuery.data]
   );
 
-  // TODO: move to intl helper
   const formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
   });
 
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <View style={styles.tripSummary}>
         <Text category={TextStyle.h3}>{trip.name}</Text>
         <Text category={TextStyle.c1}>{trip.description ?? ''}</Text>
@@ -54,17 +54,8 @@ const TripContent = ({ trip }: Props) => {
         <FlatList
           data={transactionQuery.data ?? []}
           ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-          renderItem={({ item }) => (
-            <Card style={styles.transactionRow}>
-              <View>
-                <Text style={{ flex: 1 }}>{item.description ?? 'no description'}</Text>
-                <Text style={{ flex: 1 }}>{formatter.format(item.amount)}</Text>
-              </View>
-              <View>
-                <Image src={} />
-              </View>
-            </Card>
-          )}
+          windowSize={3}
+          renderItem={({ item: transaction }) => <TripTransactionRow transaction={transaction} />}
         />
       </View>
     </View>
@@ -74,10 +65,7 @@ const TripContent = ({ trip }: Props) => {
 const styles = StyleSheet.create({
   tripSummary: {
     alignContent: 'center',
-  },
-  transactionRow: {
-    flexDirection: 'row',
-    padding: Spacing.default,
+    flex: 1,
   },
 });
 

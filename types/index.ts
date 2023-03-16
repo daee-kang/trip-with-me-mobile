@@ -1,1 +1,1 @@
-export * from './Trip';
+export * from './api';
