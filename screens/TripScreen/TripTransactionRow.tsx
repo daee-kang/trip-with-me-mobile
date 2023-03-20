@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Card, Spinner } from '@ui-kitten/components';
+import { Card, Icon, Spinner, Text, useTheme } from '@ui-kitten/components';
 import { memo, useCallback } from 'react';
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 
 import { SignedImageApi } from '../../api';
-import { Spacing } from '../../styles';
+import { Spacing, TextStyle } from '../../styles';
 import { TripTransaction } from '../../types';
 import { HomeStackParamList } from '../HomeScreen';
 
@@ -13,6 +13,7 @@ type Props = {
   transaction: TripTransaction;
 };
 const TripTransactionRow = ({ transaction }: Props) => {
+  const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
 
   const getSignedImageQuery = SignedImageApi.get(
@@ -37,33 +38,43 @@ const TripTransactionRow = ({ transaction }: Props) => {
   }, [navigation, transaction.id, transaction.trip_id]);
   return (
     <Card style={styles.transactionRow} onPress={navigateToTripTransactionDetail}>
-      <View style={{ flex: 1 }}>
-        <Text style={{ flex: 1 }}>{transaction.description ?? 'no description'}</Text>
-        <Text style={{ flex: 1 }}>{formatter.format(transaction.amount)}</Text>
-      </View>
-      {!!transaction.photo && (
-        <View>
-          {getSignedImageQuery.isLoading ? (
-            <Spinner />
-          ) : (
-            <View>
-              {getSignedImageQuery.data != null && (
-                <Image
-                  source={{ uri: getSignedImageQuery.data }}
-                  style={{ width: 80, height: 80 }}
-                />
-              )}
-            </View>
-          )}
+      <View style={{ flexDirection: 'row', height: 80 }}>
+        <View style={{ flex: 1 }}>
+          <Text category={TextStyle.h6} style={{ flex: 1, marginBottom: Spacing.default }}>
+            {transaction.description ?? 'no description'}
+          </Text>
+          <Text style={{ flex: 1 }}>{formatter.format(transaction.amount)}</Text>
         </View>
-      )}
+        {!!transaction.photo && (
+          <View>
+            {getSignedImageQuery.isLoading ? (
+              <Spinner />
+            ) : (
+              <View>
+                {getSignedImageQuery.data != null && (
+                  <Image
+                    source={{ uri: getSignedImageQuery.data }}
+                    style={{ width: 80, height: 80, borderWidth: 1 }}
+                  />
+                )}
+              </View>
+            )}
+          </View>
+        )}
+        <View style={{ justifyContent: 'center', paddingLeft: Spacing.small }}>
+          <Icon
+            name="chevron-right-outline"
+            fill={theme['color-info-800']}
+            style={{ width: 24, height: 24 }}
+          />
+        </View>
+      </View>
     </Card>
   );
 };
 
 const styles = StyleSheet.create({
   transactionRow: {
-    flexDirection: 'row',
     padding: Spacing.default,
   },
 });

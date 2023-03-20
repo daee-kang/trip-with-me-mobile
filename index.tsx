@@ -10,6 +10,7 @@ import App from './App';
 import { SessionProvider } from './contexts/SessionContext';
 import { ThemeModeContext } from './contexts/ThemeModeContext';
 import { myTheme } from './styles';
+import { default as mapping } from './styles/mapping.json';
 
 const Index = () => {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
@@ -27,7 +28,10 @@ const Index = () => {
         <QueryClientProvider client={queryClient}>
           <IconRegistry icons={EvaIconsPack} />
           <ThemeModeContext.Provider value={{ theme, toggleTheme }}>
-            <ApplicationProvider {...eva} theme={{ ...eva[theme], ...myTheme }}>
+            <ApplicationProvider
+              {...eva}
+              theme={{ ...eva[theme], ...myTheme }}
+              customMapping={{ ...eva.mapping, ...mapping }}>
               <App />
             </ApplicationProvider>
           </ThemeModeContext.Provider>

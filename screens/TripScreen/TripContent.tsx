@@ -1,21 +1,16 @@
-import { useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Button, Spinner, Text } from '@ui-kitten/components';
+import { Spinner, Text } from '@ui-kitten/components';
 import { useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { TripTransactionsApi } from '../../api';
-import { TextStyle } from '../../styles';
+import { Spacing, TextStyle } from '../../styles';
 import { Trip } from '../../types';
-import { HomeStackParamList } from '../HomeScreen';
 import TripTransactionRow from './TripTransactionRow';
 
 type Props = {
   trip: Trip;
 };
 const TripContent = ({ trip }: Props) => {
-  const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
-
   const transactionQuery = TripTransactionsApi.get(trip.id);
 
   const tripTotal = useMemo(
@@ -37,7 +32,7 @@ const TripContent = ({ trip }: Props) => {
         <Text category={TextStyle.h3}>{trip.name}</Text>
         <Text category={TextStyle.c1}>{trip.description ?? ''}</Text>
 
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', marginBottom: Spacing.larger }}>
           {tripTotal !== undefined ? (
             <Text category={TextStyle.h4} style={{ textAlign: 'center' }}>
               {formatter.format(tripTotal)}
@@ -46,10 +41,6 @@ const TripContent = ({ trip }: Props) => {
             <Spinner />
           )}
         </View>
-
-        <Button onPress={() => navigation.navigate('AddTransaction', { trip })}>
-          Add Transaction
-        </Button>
 
         <FlatList
           data={transactionQuery.data ?? []}

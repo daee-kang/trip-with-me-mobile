@@ -57,6 +57,7 @@ const TripsScreen = () => {
           return (
             <Card
               onPress={() => navigation.navigate('Trip', { id: trip.id })}
+              style={{ padding: Spacing.larger }}
               key={`trip-${trip.id}`}>
               <Text category={TextStyle.h4}>{trip.name}</Text>
             </Card>

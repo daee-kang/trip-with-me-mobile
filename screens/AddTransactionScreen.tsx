@@ -98,7 +98,6 @@ const AddTransactionScreen = () => {
 
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
       quality: 0.25,
       base64: true,
     });
@@ -111,7 +110,6 @@ const AddTransactionScreen = () => {
   const uploadImage = useCallback(async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
       base64: true,
       quality: 0.25,
     });

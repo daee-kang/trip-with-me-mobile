@@ -1,12 +1,12 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { Spinner } from '@ui-kitten/components';
+import { Spinner, Button } from '@ui-kitten/components';
 import { useEffect } from 'react';
 import { Alert, View } from 'react-native';
 
 import { /* useDeleteTripMutation, */ TripApi } from '../../api';
 import { GoBackTopNavigation } from '../../components';
-import { CommonStyles, Status } from '../../styles';
+import { CommonStyles, Spacing, Status } from '../../styles';
 import { HomeStackParamList } from './../HomeScreen';
 import TripContent from './TripContent';
 
@@ -44,7 +44,18 @@ const TripScreen = () => {
 
   return (
     <>
-      <GoBackTopNavigation onPress={() => navigation.goBack()} title="go back" />
+      <GoBackTopNavigation
+        onPress={() => navigation.goBack()}
+        title="go back"
+        accessoryRight={
+          <Button
+            disabled={getTripQuery.isFetching || getTripQuery.data.length === 0}
+            onPress={() => navigation.navigate('AddTransaction', { trip: getTripQuery.data?.[0] })}
+            style={{ width: 180, marginTop: Spacing.default }}>
+            Add Transaction
+          </Button>
+        }
+      />
       <View style={[CommonStyles.page, { flex: 1 }]}>
         {getTripQuery.isFetching ? (
           <Spinner status={Status.info} />
