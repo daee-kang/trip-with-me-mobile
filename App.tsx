@@ -10,6 +10,7 @@ import { SessionContext } from './contexts/SessionContext';
 import { supabase } from './lib/supabase';
 import HomeScreen from './screens/HomeScreen';
 import Login from './screens/Login';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
   const theme = useTheme();
@@ -32,7 +33,7 @@ export default function App() {
     supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
     });
-  }, []);
+  }, [setSession]);
 
   return (
     <NavigationContainer theme={navTheme}>

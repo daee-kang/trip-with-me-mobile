@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { registerRootComponent } from 'expo';
+import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
@@ -32,6 +33,7 @@ const Index = () => {
               {...eva}
               theme={{ ...eva[theme], ...myTheme }}
               customMapping={{ ...eva.mapping, ...mapping }}>
+              <StatusBar style={theme === 'light' ? 'dark' : 'light'} />
               <App />
             </ApplicationProvider>
           </ThemeModeContext.Provider>
