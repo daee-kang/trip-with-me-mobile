@@ -29,3 +29,9 @@ export const useGetSignedImage = (
 };
 
 export type GetSignedImageDBResponse = Awaited<ReturnType<typeof getSignedImageDB>>;
+
+const methods = {
+  get: useGetSignedImage,
+};
+
+export default methods;

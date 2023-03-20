@@ -4,7 +4,7 @@ import { Button, Card, Spinner, Text, Toggle } from '@ui-kitten/components';
 import { useCallback, useContext } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { useGetTripsQuery, useRefreshOnFocus } from '../api';
+import { TripsApi, useRefreshOnFocus } from '../api';
 import { ThemeModeContext } from '../contexts/ThemeModeContext';
 import useGetSession from '../hooks/useGetSession';
 import { supabase } from '../lib/supabase';
@@ -17,7 +17,7 @@ const TripsScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trips'>>();
   const { user } = useGetSession();
 
-  const tripsQuery = useGetTripsQuery(user.id);
+  const tripsQuery = TripsApi.get(user.id);
 
   useRefreshOnFocus(tripsQuery.refetch);
 

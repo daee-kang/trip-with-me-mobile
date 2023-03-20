@@ -60,3 +60,9 @@ export const useAddTripTransaction = (tripId?: string) => {
 };
 
 export type AddTripTransactionDBResponse = Awaited<ReturnType<typeof addTripTransactionDB>>;
+
+const methods = {
+  add: useAddTripTransaction,
+};
+
+export default methods;

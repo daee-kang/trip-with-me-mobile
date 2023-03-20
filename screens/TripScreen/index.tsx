@@ -4,7 +4,7 @@ import { Spinner } from '@ui-kitten/components';
 import { useEffect } from 'react';
 import { Alert, View } from 'react-native';
 
-import { /* useDeleteTripMutation, */ useGetTripQuery } from '../../api';
+import { /* useDeleteTripMutation, */ TripApi } from '../../api';
 import { GoBackTopNavigation } from '../../components';
 import { CommonStyles, Status } from '../../styles';
 import { HomeStackParamList } from './../HomeScreen';
@@ -14,7 +14,7 @@ const TripScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
   const route = useRoute<RouteProp<HomeStackParamList, 'Trip'>>();
 
-  const getTripQuery = useGetTripQuery(route.params.id);
+  const getTripQuery = TripApi.get(route.params.id);
   // const deleteTripMutation = useDeleteTripMutation();
 
   // const deleteTrip = useCallback(() => deleteTripMutation.mutate(route.params.id), []);

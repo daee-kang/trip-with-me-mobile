@@ -18,3 +18,9 @@ export const useGetTripsQuery = (userid: string) => {
 };
 
 export type GetTripsDBResponse = Awaited<ReturnType<typeof getTripsDB>>;
+
+const methods = {
+  get: useGetTripsQuery,
+};
+
+export default methods;

@@ -4,7 +4,7 @@ import { Button, Spinner, Text } from '@ui-kitten/components';
 import { useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import { useGetTripTransactions } from '../../api';
+import { TripTransactionsApi } from '../../api';
 import { TextStyle } from '../../styles';
 import { Trip } from '../../types';
 import { HomeStackParamList } from '../HomeScreen';
@@ -16,7 +16,7 @@ type Props = {
 const TripContent = ({ trip }: Props) => {
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
 
-  const transactionQuery = useGetTripTransactions(trip.id);
+  const transactionQuery = TripTransactionsApi.get(trip.id);
 
   const tripTotal = useMemo(
     () =>

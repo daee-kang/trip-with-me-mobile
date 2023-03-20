@@ -9,7 +9,7 @@ import { Alert, Text, View, StyleSheet, Image } from 'react-native';
 import CurrencyInput from 'react-native-currency-input';
 import uuid from 'react-native-uuid';
 
-import { useAddTripTransaction } from '../api';
+import { TripTransactionApi } from '../api';
 import { GoBackTopNavigation } from '../components';
 import { supabase } from '../lib/supabase';
 import { CommonStyles, Spacing, Status } from '../styles';
@@ -38,7 +38,7 @@ const AddTransactionScreen = () => {
   const route = useRoute<RouteProp<HomeStackParamList, 'AddTransaction'>>();
   const { trip } = route.params;
 
-  const addTransactionMutation = useAddTripTransaction(trip.id);
+  const addTransactionMutation = TripTransactionApi.add(trip.id);
 
   const uploadImageAsync = useCallback(async (base64_image: string, path: string) => {
     const { error } = await supabase.storage

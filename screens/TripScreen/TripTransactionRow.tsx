@@ -4,7 +4,7 @@ import { Card, Spinner } from '@ui-kitten/components';
 import { memo, useCallback } from 'react';
 import { Image, StyleSheet, Text, View } from 'react-native';
 
-import { useGetSignedImage } from '../../api/Trip/useGetSignedImage';
+import { SignedImageApi } from '../../api';
 import { Spacing } from '../../styles';
 import { TripTransaction } from '../../types';
 import { HomeStackParamList } from '../HomeScreen';
@@ -15,7 +15,7 @@ type Props = {
 const TripTransactionRow = ({ transaction }: Props) => {
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'Trip'>>();
 
-  const getSignedImageQuery = useGetSignedImage(
+  const getSignedImageQuery = SignedImageApi.get(
     {
       path: transaction.photo,
     },

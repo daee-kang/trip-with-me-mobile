@@ -16,3 +16,9 @@ export const useGetTripTransactions = (tripId: string) => {
   });
 };
 export type GetTripTransactionsDBResponse = Awaited<ReturnType<typeof getTripTransactionsDB>>;
+
+const methods = {
+  get: useGetTripTransactions,
+};
+
+export default methods;

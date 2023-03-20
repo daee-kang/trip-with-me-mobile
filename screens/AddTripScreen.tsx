@@ -4,7 +4,7 @@ import { Button, Input } from '@ui-kitten/components';
 import { useCallback, useEffect, useState } from 'react';
 import { Alert, View } from 'react-native';
 
-import { useAddTripMutation } from '../api';
+import { TripApi } from '../api';
 import { GoBackTopNavigation } from '../components';
 import { CommonStyles } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
@@ -15,7 +15,7 @@ const AddTripScreen = () => {
 
   const navigation = useNavigation<NativeStackNavigationProp<HomeStackParamList, 'AddTrip'>>();
 
-  const addTripMutation = useAddTripMutation();
+  const addTripMutation = TripApi.add();
 
   const onNameChange = useCallback((text: string) => setName(text), []);
   const onDescriptionChange = useCallback((text: string) => setDescription(text), []);
