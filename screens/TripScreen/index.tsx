@@ -1,10 +1,10 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Spinner } from '@ui-kitten/components';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Alert, View } from 'react-native';
 
-import { useDeleteTripMutation, useGetTripQuery } from '../../api';
+import { /* useDeleteTripMutation, */ useGetTripQuery } from '../../api';
 import { GoBackTopNavigation } from '../../components';
 import { CommonStyles, Status } from '../../styles';
 import { HomeStackParamList } from './../HomeScreen';
@@ -15,13 +15,13 @@ const TripScreen = () => {
   const route = useRoute<RouteProp<HomeStackParamList, 'Trip'>>();
 
   const getTripQuery = useGetTripQuery(route.params.id);
-  const deleteTripMutation = useDeleteTripMutation();
+  // const deleteTripMutation = useDeleteTripMutation();
 
-  const deleteTrip = useCallback(() => deleteTripMutation.mutate(route.params.id), []);
+  // const deleteTrip = useCallback(() => deleteTripMutation.mutate(route.params.id), []);
 
-  useEffect(() => {
-    if (deleteTripMutation.isSuccess) navigation.goBack();
-  }, [deleteTripMutation.isSuccess, navigation]);
+  // useEffect(() => {
+  //   if (deleteTripMutation.isSuccess) navigation.goBack();
+  // }, [deleteTripMutation.isSuccess, navigation]);
 
   useEffect(() => {
     if (getTripQuery.isFetching) return;

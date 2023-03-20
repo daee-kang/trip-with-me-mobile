@@ -12,7 +12,7 @@ import uuid from 'react-native-uuid';
 import { useAddTripTransaction } from '../api';
 import { GoBackTopNavigation } from '../components';
 import { supabase } from '../lib/supabase';
-import { CommonStyles, Spacing, Status, Size } from '../styles';
+import { CommonStyles, Spacing, Status } from '../styles';
 import { HomeStackParamList } from './HomeScreen';
 
 type TransactionFormData = {
@@ -49,7 +49,7 @@ const AddTransactionScreen = () => {
         upsert: true,
       });
 
-    if (error) throw error;
+    if (error) throw new Error('Error uploading image');
   }, []);
 
   const onSubmit = handleSubmit(
@@ -66,8 +66,8 @@ const AddTransactionScreen = () => {
           await uploadImageAsync(image.base64, photoUri);
           imageUploadSuccess = true;
         } catch (e) {
-          Alert.alert('Error', 'Unable to upload image. Please try again.');
-          console.error(e);
+          Alert.alert('Error', 'Unable to upload image.');
+
           imageUploadSuccess = false;
         }
       }
@@ -99,8 +99,7 @@ const AddTransactionScreen = () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
+      quality: 0.25,
       base64: true,
     });
 
@@ -114,8 +113,7 @@ const AddTransactionScreen = () => {
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       base64: true,
-      aspect: [4, 3],
-      quality: 1,
+      quality: 0.25,
     });
 
     if (!result.canceled) {
